@@ -72,9 +72,107 @@ sudo usermode -aG sudo YOURUSER
 
 for the project, you need to set a strong password policy.
 
-you first need to setup the time for password change. you can do it by using the followings command :
+you first need to setup the time for password change. you can do it for actual users by using the followings command :
 
 ```
 sudo chage -m 2 -M 30 -W 7 root 
 sudo chage -m 2 -M 30 -W 7 YOURUSER
 ```
+you need to set this rules by add the following lines to ```/etc/login.defs``` :
+```
+PASS_MAX_DAYS   30
+PASS_MIN_DAYS   2
+PASS_WARN_AGE   7
+```
+
+after that, you need to set the restrictions for the password.
+you need to install the libpam_pwquality with ```sudo apt install libpam_pwquality```
+then, edit the ```/etc/pam.d``` for set this line :
+
+```
+password        requisite                       pam_pwquality.so retry=3 minlen=10 difok=7 ucredit=-1 lcredit=-1 dcredit=-1 reject_username enforce_for_root
+```
+
+
+## Seventh step : monitoring.sh
+
+you need to write a script in shell conforming to the subject.
+then, for setting up the 10 min interval, you need to install cron and wall by the following command :
+```
+sudo apt install cron
+sudo apt install wall
+```
+
+then, edit the configuring file of cron with ```crontab -e``` and add the following line :
+
+```
+*/10 * * * * bash PATH_TO_YOUR_SCRIPT | wall
+```
+
+after that, you have finish the mandatory part. Now, this is how to make the bonuses :
+
+## Eighth step : MariaDB
+
+You first need to install MariaDB with ```sudo apt install mariadb-server```.
+then, secure the MariaDB installation with ```sudo mysql_secure_installation```
+set a password for root user, delete anonym users, disabled root remote connexion and delete the test database.
+then, launch Mysql as root with ```sudo mysql -u root -p```
+you need to create a new database for wordpress and a new user for this database.
+do it with :
+```
+CREATE DATABASE name of the database DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci; #create the database and set the locales
+CREATE USER 'name of the user'@'localhost' IDENTIFIED BY 'user password'; #create the user for the database with the password
+GRANT ALL PRIVILEGES ON name of the databse.* TO 'your user'@'localhost'; #enable your user to access the database
+FLUSH PRIVILEGES; #enable the new privileges set
+EXIT; #quit mysql
+```
+
+## Ninth step : Lighttpd
+
+Install it with ```sudo apt install lighttpd```
+set the port you want by edit the ```/etc/lighttpd/lighttpd.conf``` file.
+now enable and start the service by :
+```
+sudo systemctl enable lighttpd
+sudo systemctl start lighttpd
+```
+## Tenth step : PHP
+
+install PHP and all the modules for wordpress with ```sudo apt install php php-cgi php-mysql php-gd php-curl -y```
+enable fastcgi and fastcgi-php for lighttpd with : 
+```
+sudo lighty-enable-mod fastcgi
+sudo lighty-enable-mod fastcgi-php
+```
+restart lighttpd for apply changes by ```sudo systemctl restart lighttpd```
+
+## Eleventh step : wordpress
+
+download the last releases of wordpress with :
+```
+wget https://wordpress.org/latest.tar.gz
+```
+now extract it with :
+```
+tar xzvf latest.tar.gz
+```
+now set the default template as config by :
+```
+mv wordpress/wp-config-sample.php wordpress/wp-config.php
+```
+edit the conf file and set your DB info by :
+```
+nano wordpress/wp-config.php
+```
+now, move the wordpress folder to lighttpd and set the good perms with :
+```
+mv wordpress /var/www/html/
+sudo chown -R www-data:www-data /var/www/html/wordpress
+sudo chmod -R 755 /var/www/html/wordpress
+```
+don't forget to edit the UFW rules in accord to your lighttpd port settings.
+now, you normally can access your website with ```http://localhost:LIGHTTPDPORT/wordpress```
+
+## Last step
+
+Install the service of your choice in your server !
