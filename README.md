@@ -87,7 +87,7 @@ PASS_WARN_AGE   7
 
 after that, you need to set the restrictions for the password.
 you need to install the libpam_pwquality with ```sudo apt install libpam-pwquality```
-then, edit the ```/etc/pam.d``` for set this line :
+then, edit the ```/etc/pam.d/common-password``` file for set this line :
 
 ```
 password        requisite                       pam_pwquality.so retry=3 minlen=10 difok=7 ucredit=-1 lcredit=-1 dcredit=-1 reject_username enforce_for_root
@@ -97,12 +97,7 @@ password        requisite                       pam_pwquality.so retry=3 minlen=
 ## Seventh step : monitoring.sh
 
 you need to write a script in shell conforming to the subject.
-then, for setting up the 10 min interval, you need to install cron and wall by the following command :
-```
-sudo apt install cron
-sudo apt install wall
-```
-
+then, for setting up the 10 min interval, you need to install cron with ```sudo apt install cron```
 then, edit the configuring file of cron with ```crontab -e``` and add the following line :
 
 ```
