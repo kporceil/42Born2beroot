@@ -44,7 +44,7 @@ now, we can set up ufw with these commands :
 ```
 ufw allow 4242/tcp #allow the port for ssh
 ufw default deny incoming #deny all incoming connexion by default
-ufw default alloy outgoing #alloy all outgoing connexion by default (deny all outgoing connexion can cause several problems in your machine)
+ufw default allow outgoing #alloy all outgoing connexion by default (deny all outgoing connexion can cause several problems in your machine)
 ufw enable # enable UFW
 ```
 
