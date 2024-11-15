@@ -90,7 +90,7 @@ you need to install the libpam_pwquality with ```sudo apt install libpam-pwquali
 then, edit the ```/etc/pam.d/common-password``` file for set this line :
 
 ```
-password        requisite                       pam_pwquality.so retry=3 minlen=10 difok=7 ucredit=-1 lcredit=-1 dcredit=-1 reject_username enforce_for_root
+password        requisite                       pam_pwquality.so retry=3 minlen=10 maxrepeat=3 difok=7 ucredit=-1 lcredit=-1 dcredit=-1 reject_username enforce_for_root
 ```
 
 
