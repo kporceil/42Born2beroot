@@ -86,7 +86,7 @@ PASS_WARN_AGE   7
 ```
 
 after that, you need to set the restrictions for the password.
-you need to install the libpam_pwquality with ```sudo apt install libpam_pwquality```
+you need to install the libpam_pwquality with ```sudo apt install libpam-pwquality```
 then, edit the ```/etc/pam.d``` for set this line :
 
 ```
