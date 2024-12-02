@@ -64,8 +64,8 @@ just follow theses commands :
 
 ```
 sudo groupadd user42
-sudo usermode -aG user42 YOURUSER
-sudo usermode -aG sudo YOURUSER
+sudo usermod -aG user42 YOURUSER
+sudo usermod -aG sudo YOURUSER
 ```
 
 ## Sixth step : set strong password policy
