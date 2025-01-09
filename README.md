@@ -2,6 +2,10 @@
 Born2beroot is one of the second circle projects of 42 school.
 On this project, we gonna discover Virtual machine and how to set a proper environment with strict rules.
 
+## Warning
+
+⚠️ This guide is obviously not enough to make the Born2BeRoot project. you need to do your own research ⚠️
+
 ## First step : Install Debian
 
 Create a new Virtual Machine in Oracle Virtual Box.
